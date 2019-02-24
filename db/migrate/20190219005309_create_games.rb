@@ -5,6 +5,9 @@ class CreateGames < ActiveRecord::Migration[5.2]
       t.text :description
       t.datetime :release_date
       t.integer :igdb_id
+      t.references :developer
+      t.references :publisher
+      t.references :game_mode
 
       t.timestamps
     end

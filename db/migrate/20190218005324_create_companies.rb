@@ -5,8 +5,6 @@ class CreateCompanies < ActiveRecord::Migration[5.2]
       t.string :name
       t.text :description
       t.string :type, null: false
-      t.references :developer
-      t.references :publisher
 
       t.timestamps
     end
