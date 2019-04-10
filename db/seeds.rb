@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # This file should contain all the record creation needed to seed the database with its default values.
 # The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
 #
@@ -11,30 +13,25 @@
 #
 
 platforms = [{
-                 name: 'Xbox One',
-                 igdb_id: 49
-             },
+  name: 'Xbox One',
+  igdb_id: 49
+},
              {
-                 name: "Nintendo Switch",
-                 igdb_id: 130
+               name: 'Nintendo Switch',
+               igdb_id: 130
              }]
 Platform.create(platforms)
 
-
 gameModes = [{
 
-             }]
+}]
 GameMode.create(gameModes)
-
 
 # developer
 
-
 # publisher
-
 
 games = []
 Game.create(games)
-
 
 # multiplayerMode for games

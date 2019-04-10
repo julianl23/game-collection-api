@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class MultiplayerModesController < ApplicationController
-  before_action :set_multiplayer_mode, only: [:show, :update, :destroy]
+  before_action :set_multiplayer_mode, only: %i[show update destroy]
 
   # GET /multiplayer_modes
   def index
@@ -39,13 +41,14 @@ class MultiplayerModesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_multiplayer_mode
-      @multiplayer_mode = MultiplayerMode.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def multiplayer_mode_params
-      params.fetch(:multiplayer_mode, {})
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_multiplayer_mode
+    @multiplayer_mode = MultiplayerMode.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def multiplayer_mode_params
+    params.fetch(:multiplayer_mode, {})
+  end
 end

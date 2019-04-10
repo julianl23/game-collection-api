@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class GameModesController < ApplicationController
-  before_action :set_game_mode, only: [:show, :update, :destroy]
+  before_action :set_game_mode, only: %i[show update destroy]
 
   # GET /game_modes
   def index
@@ -39,13 +41,14 @@ class GameModesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game_mode
-      @game_mode = GameMode.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def game_mode_params
-      params.require(:game_mode).permit(:igdb_id, :name)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_game_mode
+    @game_mode = GameMode.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def game_mode_params
+    params.require(:game_mode).permit(:igdb_id, :name)
+  end
 end

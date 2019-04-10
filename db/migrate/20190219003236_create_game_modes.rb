@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateGameModes < ActiveRecord::Migration[5.2]
   def change
     create_table :game_modes do |t|

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Platform < ApplicationRecord
-  belongs_to :game
+  has_many :games
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class GameMode < ApplicationRecord
-  belongs_to :game
+  has_many :game
 end

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class CompaniesController < ApplicationController
-  before_action :set_company, only: [:show, :update, :destroy]
+  before_action :set_company, only: %i[show update destroy]
 
   # GET /companies
   def index
@@ -39,13 +41,14 @@ class CompaniesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_company
-      @company = Company.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def company_params
-      params.require(:company).permit(:igdb_id, :name, :description)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_company
+    @company = Company.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def company_params
+    params.require(:company).permit(:igdb_id, :name, :description)
+  end
 end

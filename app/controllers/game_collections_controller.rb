@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 class GameCollectionsController < ApplicationController
-  before_action :set_game_collection, only: [:show, :update, :destroy]
+  before_action :set_game_collection, only: %i[show update destroy]
 
   # GET /game_collections
   def index
@@ -39,13 +41,14 @@ class GameCollectionsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_game_collection
-      @game_collection = GameCollection.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def game_collection_params
-      params.require(:game_collection).permit(:owner_id, :game_id_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_game_collection
+    @game_collection = GameCollection.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def game_collection_params
+    params.require(:game_collection).permit(:owner_id, :game_id_id)
+  end
 end

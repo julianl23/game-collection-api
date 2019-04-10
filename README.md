@@ -22,3 +22,7 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+
+## Setup scripts
+`rake environment igdb:get_platforms`
