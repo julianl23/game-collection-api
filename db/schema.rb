@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_09_125220) do
+ActiveRecord::Schema.define(version: 2019_04_20_184202) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,20 +26,14 @@ ActiveRecord::Schema.define(version: 2019_04_09_125220) do
 
   create_table "covers", force: :cascade do |t|
     t.string "url"
-    t.string "cloudinary_id"
     t.integer "width"
     t.integer "height"
     t.bigint "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "igdb_id"
+    t.string "igdb_image_id"
     t.index ["game_id"], name: "index_covers_on_game_id"
-  end
-
-  create_table "developers", force: :cascade do |t|
-    t.integer "company_id"
-    t.integer "game_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "game_collections", force: :cascade do |t|
@@ -51,6 +45,24 @@ ActiveRecord::Schema.define(version: 2019_04_09_125220) do
     t.index ["user_id"], name: "index_game_collections_on_user_id"
   end
 
+  create_table "game_developers", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_game_developers_on_company_id"
+    t.index ["game_id"], name: "index_game_developers_on_game_id"
+  end
+
+  create_table "game_mode_items", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "game_mode_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_game_mode_items_on_game_id"
+    t.index ["game_mode_id"], name: "index_game_mode_items_on_game_mode_id"
+  end
+
   create_table "game_modes", force: :cascade do |t|
     t.integer "igdb_id"
     t.string "name"
@@ -58,30 +70,37 @@ ActiveRecord::Schema.define(version: 2019_04_09_125220) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "game_platforms", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "platform_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["game_id"], name: "index_game_platforms_on_game_id"
+    t.index ["platform_id"], name: "index_game_platforms_on_platform_id"
+  end
+
+  create_table "game_publishers", force: :cascade do |t|
+    t.bigint "game_id"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_game_publishers_on_company_id"
+    t.index ["game_id"], name: "index_game_publishers_on_game_id"
+  end
+
   create_table "games", force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.datetime "release_date"
     t.integer "igdb_id"
-    t.bigint "developer_id"
-    t.bigint "publisher_id"
-    t.bigint "game_mode_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "platform_id"
-    t.bigint "multiplayer_mode_id"
     t.bigint "cover_id"
+    t.string "url"
     t.index ["cover_id"], name: "index_games_on_cover_id"
-    t.index ["developer_id"], name: "index_games_on_developer_id"
-    t.index ["game_mode_id"], name: "index_games_on_game_mode_id"
-    t.index ["multiplayer_mode_id"], name: "index_games_on_multiplayer_mode_id"
-    t.index ["platform_id"], name: "index_games_on_platform_id"
-    t.index ["publisher_id"], name: "index_games_on_publisher_id"
   end
 
   create_table "multiplayer_modes", force: :cascade do |t|
-    t.bigint "platform_id"
-    t.bigint "game_id"
     t.boolean "offline_coop"
     t.boolean "online_coop"
     t.boolean "lan_coop"
@@ -95,6 +114,8 @@ ActiveRecord::Schema.define(version: 2019_04_09_125220) do
     t.integer "offline_max"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "game_id"
+    t.bigint "platform_id"
     t.index ["game_id"], name: "index_multiplayer_modes_on_game_id"
     t.index ["platform_id"], name: "index_multiplayer_modes_on_platform_id"
   end
@@ -102,13 +123,6 @@ ActiveRecord::Schema.define(version: 2019_04_09_125220) do
   create_table "platforms", force: :cascade do |t|
     t.string "name"
     t.integer "igdb_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "publishers", force: :cascade do |t|
-    t.integer "company_id"
-    t.integer "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -124,4 +138,12 @@ ActiveRecord::Schema.define(version: 2019_04_09_125220) do
 
   add_foreign_key "game_collections", "games"
   add_foreign_key "game_collections", "users"
+  add_foreign_key "game_developers", "companies"
+  add_foreign_key "game_developers", "games"
+  add_foreign_key "game_mode_items", "game_modes"
+  add_foreign_key "game_mode_items", "games"
+  add_foreign_key "game_platforms", "games"
+  add_foreign_key "game_platforms", "platforms"
+  add_foreign_key "game_publishers", "companies"
+  add_foreign_key "game_publishers", "games"
 end

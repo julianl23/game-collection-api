@@ -4,7 +4,6 @@ class CreateMultiplayerModes < ActiveRecord::Migration[5.2]
   def change
     create_table :multiplayer_modes do |t|
       t.references :platform
-      t.references :game
       t.boolean :offline_coop
       t.boolean :online_coop
       t.boolean :lan_coop

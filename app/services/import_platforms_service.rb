@@ -1,6 +1,6 @@
-# frozen_string_literal: true
 
-class ImportPlatformHelper
+
+class ImportPlatformsService
   def self.add_platforms_for_page(page)
     page.each do |item|
       id = item['id']
