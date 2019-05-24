@@ -1,7 +1,6 @@
 class RegistrationsController < Devise::RegistrationsController
   respond_to :json
 
-
   # The params expected here will always be included in a user object.
   # EX:
   # {

@@ -20,7 +20,9 @@ class MultiplayerModesController < ApplicationController
     @multiplayer_mode = MultiplayerMode.new(multiplayer_mode_params)
 
     if @multiplayer_mode.save
-      render json: @multiplayer_mode, status: :created, location: @multiplayer_mode
+      render json: @multiplayer_mode,
+             status: :created,
+             location: @multiplayer_mode
     else
       render json: @multiplayer_mode.errors, status: :unprocessable_entity
     end

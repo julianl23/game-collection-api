@@ -12,19 +12,13 @@
 # platforms -> game modes -> games
 #
 
-platforms = [{
-  name: 'Xbox One',
-  igdb_id: 49
-},
-             {
-               name: 'Nintendo Switch',
-               igdb_id: 130
-             }]
+platforms = [
+  { name: 'Xbox One', igdb_id: 49 },
+  { name: 'Nintendo Switch', igdb_id: 130 }
+]
 Platform.create(platforms)
 
-gameModes = [{
-
-}]
+gameModes = [{}]
 GameMode.create(gameModes)
 
 # developer

@@ -1,5 +1,4 @@
 class RemoveOriginalGameCollectionsAndUsers < ActiveRecord::Migration[5.2]
-
   # Drop the originally created Users and Game Collections tables
   # These will be regenerated after devise is installed
 

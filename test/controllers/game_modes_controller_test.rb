@@ -1,11 +1,7 @@
-
-
 require 'test_helper'
 
 class GameModesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @game_mode = game_modes(:one)
-  end
+  setup { @game_mode = game_modes(:one) }
 
   test 'should get index' do
     get game_modes_url, as: :json
@@ -14,7 +10,11 @@ class GameModesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create game_mode' do
     assert_difference('GameMode.count') do
-      post game_modes_url, params: { game_mode: { igdb_id: @game_mode.igdb_id, name: @game_mode.name } }, as: :json
+      post game_modes_url,
+           params: {
+             game_mode: { igdb_id: @game_mode.igdb_id, name: @game_mode.name }
+           },
+           as: :json
     end
 
     assert_response 201
@@ -26,7 +26,11 @@ class GameModesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update game_mode' do
-    patch game_mode_url(@game_mode), params: { game_mode: { igdb_id: @game_mode.igdb_id, name: @game_mode.name } }, as: :json
+    patch game_mode_url(@game_mode),
+          params: {
+            game_mode: { igdb_id: @game_mode.igdb_id, name: @game_mode.name }
+          },
+          as: :json
     assert_response 200
   end
 

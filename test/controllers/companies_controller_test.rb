@@ -1,11 +1,7 @@
-
-
 require 'test_helper'
 
 class CompaniesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @company = companies(:one)
-  end
+  setup { @company = companies(:one) }
 
   test 'should get index' do
     get companies_url, as: :json
@@ -14,7 +10,15 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create company' do
     assert_difference('Company.count') do
-      post companies_url, params: { company: { description: @company.description, igdb_id: @company.igdb_id, name: @company.name } }, as: :json
+      post companies_url,
+           params: {
+             company: {
+               description: @company.description,
+               igdb_id: @company.igdb_id,
+               name: @company.name
+             }
+           },
+           as: :json
     end
 
     assert_response 201
@@ -26,7 +30,15 @@ class CompaniesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update company' do
-    patch company_url(@company), params: { company: { description: @company.description, igdb_id: @company.igdb_id, name: @company.name } }, as: :json
+    patch company_url(@company),
+          params: {
+            company: {
+              description: @company.description,
+              igdb_id: @company.igdb_id,
+              name: @company.name
+            }
+          },
+          as: :json
     assert_response 200
   end
 

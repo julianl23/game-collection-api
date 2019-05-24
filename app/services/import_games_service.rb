@@ -20,7 +20,9 @@ class ImportGamesService
       puts "Processing igdb ##{igdb_id} - #{title}"
 
       description = item['summary']
-      timestamp_string = item['first_release_date'].to_s if item['first_release_date']
+      if item['first_release_date']
+        timestamp_string = item['first_release_date'].to_s
+      end
       release_date = nil
 
       if timestamp_string
@@ -34,20 +36,30 @@ class ImportGamesService
       if existing_game
         # For some ungodly reason, duplicates come back in the result set from IGDB
         # We need to handle this situation and not re-add the same platform repeatedly.
-        existing_game_platform = GamePlatform.where(['platform_id = :p AND game_id = :g',
-                            { p: platform.id, g: existing_game.id }]).first
+        existing_game_platform =
+          GamePlatform.where(
+            [
+              'platform_id = :p AND game_id = :g',
+              { p: platform.id, g: existing_game.id }
+            ]
+          )
+            .first
         existing_game.platforms << platform unless existing_game_platform
       end
 
       next unless existing_game.nil?
 
-      involved_companies = self.handle_involved_companies(item['involved_companies'])
+      involved_companies =
+        self.handle_involved_companies(item['involved_companies'])
 
-      new_game = Game.create(title: title,
-                             description: description,
-                             release_date: release_date,
-                             igdb_id: igdb_id,
-                             url: url)
+      new_game =
+        Game.create(
+          title: title,
+          description: description,
+          release_date: release_date,
+          igdb_id: igdb_id,
+          url: url
+        )
 
       new_game.platforms << platform
 
@@ -60,6 +72,7 @@ class ImportGamesService
       end
 
       cover_ref = item['cover']
+
       if cover_ref
         if cover_ref.is_a?(Integer) || cover_ref.is_a?(String)
           puts "Cover for igdb ID #{igdb_id} is not a hash"
@@ -68,14 +81,15 @@ class ImportGamesService
           if existing_cover
             new_game.cover = existing_cover
           else
-            new_cover = Cover.create(
-              game: new_game,
-              igdb_id: cover_ref['id'],
-              height: cover_ref['height'],
-              width: cover_ref['width'],
-              igdb_image_id: cover_ref['image_id'],
-              url: cover_ref['url']
-            )
+            new_cover =
+              Cover.create(
+                game: new_game,
+                igdb_id: cover_ref['id'],
+                height: cover_ref['height'],
+                width: cover_ref['width'],
+                igdb_image_id: cover_ref['image_id'],
+                url: cover_ref['url']
+              )
 
             new_game.cover = new_cover
           end
@@ -87,10 +101,7 @@ class ImportGamesService
       if item['game_modes']
         local_game_modes = []
         GameMode.where(igdb_id: item['game_modes']).each do |mode|
-          local_game_modes << GameModeItem.new(
-            game: new_game,
-            game_mode: mode
-          )
+          local_game_modes << GameModeItem.new(game: new_game, game_mode: mode)
         end
 
         new_game.game_mode_items << local_game_modes
@@ -124,6 +135,7 @@ class ImportGamesService
         next unless involved_company_id
 
         local_company = Company.find_by_igdb_id(involved_company_id)
+
         if local_company
           if involved_company['developer'] == true
             local_developers << local_company
@@ -136,18 +148,16 @@ class ImportGamesService
       end
 
       unless companies_to_retrieve.empty?
-        fields = %w[
-            id
-            name
-            description
-            slug
-          ].join(',')
+        fields = %w[id name description slug].join(',')
 
         request = IGDBRequestService.new(endpoint: 'companies')
-        response = request.get(fields: fields,
-                               filter: "id = (#{companies_to_retrieve.join(',')})")
+        response =
+          request.get(
+            fields: fields, filter: "id = (#{companies_to_retrieve.join(',')})"
+          )
         JSON.parse(response.body).each do |item|
-          involved_company = involved_companies.find { |comp| comp['company'] == item['id'] }
+          involved_company =
+            involved_companies.find { |comp| comp['company'] == item['id'] }
           new_company = self.add_related_company(item)
 
           if involved_company['developer'] == true
@@ -163,10 +173,12 @@ class ImportGamesService
   end
 
   def self.add_related_company(company_json)
-    Company.create(igdb_id: company_json['id'],
-                   name: company_json['name'],
-                   description: company_json['description'],
-                   slug: company_json['slug'])
+    Company.create(
+      igdb_id: company_json['id'],
+      name: company_json['name'],
+      description: company_json['description'],
+      slug: company_json['slug']
+    )
   end
 
   def self.add_multiplayer_mode(mode, game_obj)

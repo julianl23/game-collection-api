@@ -1,5 +1,3 @@
-
-
 class ImportPlatformsService
   def self.add_platforms_for_page(page)
     page.each do |item|

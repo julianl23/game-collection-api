@@ -27,7 +27,11 @@ class IGDBRequestService
     body << "offset #{@offset}; " unless @offset.nil?
     body << "limit #{@limit}; " unless @limit.nil?
 
-    headers = { 'user-key': ENV['IGDB_KEY'], accept: 'application/json', 'content-type': 'application/json' }
+    headers = {
+      'user-key': ENV['IGDB_KEY'],
+      accept: 'application/json',
+      'content-type': 'application/json'
+    }
 
     if debug
       puts "API URL: #{api_url}"

@@ -1,11 +1,7 @@
-
-
 require 'test_helper'
 
 class PlatformsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @platform = platforms(:one)
-  end
+  setup { @platform = platforms(:one) }
 
   test 'should get index' do
     get platforms_url, as: :json
@@ -14,7 +10,11 @@ class PlatformsControllerTest < ActionDispatch::IntegrationTest
 
   test 'should create platform' do
     assert_difference('Platform.count') do
-      post platforms_url, params: { platform: { igdb_id: @platform.igdb_id, name: @platform.name } }, as: :json
+      post platforms_url,
+           params: {
+             platform: { igdb_id: @platform.igdb_id, name: @platform.name }
+           },
+           as: :json
     end
 
     assert_response 201
@@ -26,7 +26,11 @@ class PlatformsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update platform' do
-    patch platform_url(@platform), params: { platform: { igdb_id: @platform.igdb_id, name: @platform.name } }, as: :json
+    patch platform_url(@platform),
+          params: {
+            platform: { igdb_id: @platform.igdb_id, name: @platform.name }
+          },
+          as: :json
     assert_response 200
   end
 

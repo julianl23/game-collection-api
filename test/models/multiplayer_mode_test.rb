@@ -1,5 +1,3 @@
-
-
 require 'test_helper'
 
 class MultiplayerModeTest < ActiveSupport::TestCase

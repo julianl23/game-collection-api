@@ -1,11 +1,7 @@
-
-
 require 'test_helper'
 
 class CoversControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @cover = covers(:one)
-  end
+  setup { @cover = covers(:one) }
 
   test 'should get index' do
     get covers_url, as: :json
@@ -31,9 +27,7 @@ class CoversControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should destroy cover' do
-    assert_difference('Cover.count', -1) do
-      delete cover_url(@cover), as: :json
-    end
+    assert_difference('Cover.count', -1) { delete cover_url(@cover), as: :json }
 
     assert_response 204
   end

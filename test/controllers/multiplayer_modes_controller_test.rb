@@ -1,11 +1,7 @@
-
-
 require 'test_helper'
 
 class MultiplayerModesControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @multiplayer_mode = multiplayer_modes(:one)
-  end
+  setup { @multiplayer_mode = multiplayer_modes(:one) }
 
   test 'should get index' do
     get multiplayer_modes_url, as: :json
@@ -26,7 +22,8 @@ class MultiplayerModesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should update multiplayer_mode' do
-    patch multiplayer_mode_url(@multiplayer_mode), params: { multiplayer_mode: {} }, as: :json
+    patch multiplayer_mode_url(@multiplayer_mode),
+          params: { multiplayer_mode: {} }, as: :json
     assert_response 200
   end
 
