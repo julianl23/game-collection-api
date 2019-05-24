@@ -37,5 +37,7 @@ module GameCollectionApi
     config.api_only = true
 
     config.autoload_paths << Rails.root.join('lib')
+
+    config.logger = Logger.new(STDOUT)
   end
 end

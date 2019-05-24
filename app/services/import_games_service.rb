@@ -17,6 +17,8 @@ class ImportGamesService
       igdb_id = item['id']
       title = item['name']
 
+      puts "Processing igdb ##{igdb_id} - #{title}"
+
       description = item['summary']
       timestamp_string = item['first_release_date'].to_s if item['first_release_date']
       release_date = nil
@@ -30,7 +32,11 @@ class ImportGamesService
       existing_game = Game.find_by_igdb_id(igdb_id)
 
       if existing_game
-        existing_game.platforms << platform
+        # For some ungodly reason, duplicates come back in the result set from IGDB
+        # We need to handle this situation and not re-add the same platform repeatedly.
+        existing_game_platform = GamePlatform.where(['platform_id = :p AND game_id = :g',
+                            { p: platform.id, g: existing_game.id }]).first
+        existing_game.platforms << platform unless existing_game_platform
       end
 
       next unless existing_game.nil?
@@ -53,22 +59,30 @@ class ImportGamesService
         new_game.game_developers.create(company_id: item.id)
       end
 
-      new_game.save
-
       cover_ref = item['cover']
       if cover_ref
-        existing_cover = Cover.find_by_igdb_id(cover_ref['id'])
-        unless existing_cover
-          Cover.create(
-            game: new_game,
-            igdb_id: cover_ref['id'],
-            height: cover_ref['height'],
-            width: cover_ref['width'],
-            igdb_image_id: cover_ref['image_id'],
-            url: cover_ref['url']
-          )
+        if cover_ref.is_a?(Integer) || cover_ref.is_a?(String)
+          puts "Cover for igdb ID #{igdb_id} is not a hash"
+        else
+          existing_cover = Cover.find_by_igdb_id(cover_ref['id'])
+          if existing_cover
+            new_game.cover = existing_cover
+          else
+            new_cover = Cover.create(
+              game: new_game,
+              igdb_id: cover_ref['id'],
+              height: cover_ref['height'],
+              width: cover_ref['width'],
+              igdb_image_id: cover_ref['image_id'],
+              url: cover_ref['url']
+            )
+
+            new_game.cover = new_cover
+          end
         end
       end
+
+      new_game.save!
 
       if item['game_modes']
         local_game_modes = []
@@ -97,7 +111,19 @@ class ImportGamesService
       companies_to_retrieve = []
 
       involved_companies.each do |involved_company|
-        local_company = Company.find_by_igdb_id(involved_company['company'])
+        if involved_company.is_a?(Integer) || involved_company.is_a?(String)
+          # Sometimes, the involved company comes back as an integer, not a
+          # hash. I think maybe I could collect them and try to pull them all
+          # by ID at the end, but I don't know that it matters too much
+
+          puts "Involved company is not a hash (got #{involved_company})"
+          next
+        end
+
+        involved_company_id = involved_company['company']
+        next unless involved_company_id
+
+        local_company = Company.find_by_igdb_id(involved_company_id)
         if local_company
           if involved_company['developer'] == true
             local_developers << local_company
@@ -144,6 +170,11 @@ class ImportGamesService
   end
 
   def self.add_multiplayer_mode(mode, game_obj)
+    if mode.is_a?(Integer) || mode.is_a?(String)
+      puts "Multiplayer mode is not a hash - #{mode}"
+      return nil
+    end
+
     if mode['platform']
       mode_platform = Platform.find_by_igdb_id(mode['platform'])
 

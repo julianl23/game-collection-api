@@ -24,13 +24,12 @@ class IGDBRequestService
     body << "where #{filter}; " unless filter.nil?
     body << "fields: #{fields}; " unless fields.nil?
     body << "sort: #{sort}; " unless sort.nil?
-    body << "offset #{@offset}; " unless offset.nil?
+    body << "offset #{@offset}; " unless @offset.nil?
     body << "limit #{@limit}; " unless @limit.nil?
 
     headers = { 'user-key': ENV['IGDB_KEY'], accept: 'application/json', 'content-type': 'application/json' }
 
     if debug
-      puts "HEADERS: #{headers}"
       puts "API URL: #{api_url}"
       puts "BODY: #{body}"
     end

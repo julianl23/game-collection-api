@@ -2,53 +2,54 @@
 
 class GameCollectionsController < ApplicationController
   before_action :set_game_collection, only: %i[show update destroy]
+  before_action :authenticate_user!
 
-  # GET /game_collections
-  def index
-    @game_collections = GameCollection.all
-
-    render json: @game_collections
-  end
-
-  # GET /game_collections/1
-  def show
-    render json: @game_collection
-  end
-
-  # POST /game_collections
-  def create
-    @game_collection = GameCollection.new(game_collection_params)
-
-    if @game_collection.save
-      render json: @game_collection, status: :created, location: @game_collection
-    else
-      render json: @game_collection.errors, status: :unprocessable_entity
-    end
-  end
-
-  # PATCH/PUT /game_collections/1
-  def update
-    if @game_collection.update(game_collection_params)
-      render json: @game_collection
-    else
-      render json: @game_collection.errors, status: :unprocessable_entity
-    end
-  end
-
-  # DELETE /game_collections/1
-  def destroy
-    @game_collection.destroy
-  end
-
-  private
-
-  # Use callbacks to share common setup or constraints between actions.
+  # # GET /games
+  # def index
+  #   @games = Game.all
+  # 
+  #   render json: @games
+  # end
+  # 
+  # # GET /games/1
+  # def show
+  #   render json: @game
+  # end
+  # 
+  # # POST /games
+  # def create
+  #   @game = Game.new(game_params)
+  # 
+  #   if @game.save
+  #     render json: @game, status: :created, location: @game
+  #   else
+  #     render json: @game.errors, status: :unprocessable_entity
+  #   end
+  # end
+  # 
+  # # PATCH/PUT /games/1
+  # def update
+  #   if @game.update(game_params)
+  #     render json: @game
+  #   else
+  #     render json: @game.errors, status: :unprocessable_entity
+  #   end
+  # end
+  # 
+  # # DELETE /games/1
+  # def destroy
+  #   @game.destroy
+  # end
+  # 
+  # private
+  # 
+  # # Use callbacks to share common setup or constraints between actions.
   def set_game_collection
     @game_collection = GameCollection.find(params[:id])
   end
 
-  # Only allow a trusted parameter "white list" through.
-  def game_collection_params
-    params.require(:game_collection).permit(:owner_id, :game_id_id)
-  end
+  # # Only allow a trusted parameter "white list" through.
+  # def game_params
+  #   params.require(:game).permit(:title, :description, :igdb_id, :url, :release_date)
+  # end
 end

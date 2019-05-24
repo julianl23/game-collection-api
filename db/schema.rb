@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_04_20_184202) do
+ActiveRecord::Schema.define(version: 2019_05_16_184549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,12 +36,27 @@ ActiveRecord::Schema.define(version: 2019_04_20_184202) do
     t.index ["game_id"], name: "index_covers_on_game_id"
   end
 
+  create_table "game_collection_items", force: :cascade do |t|
+    t.bigint "game_collection_id"
+    t.bigint "game_id"
+    t.bigint "platform_id"
+    t.boolean "is_borrowed"
+    t.money "cost", scale: 2
+    t.text "note_text"
+    t.boolean "is_private_note"
+    t.boolean "has_cart_disk_item"
+    t.boolean "has_case_box"
+    t.boolean "has_manual"
+    t.boolean "has_other_items"
+    t.index ["game_collection_id"], name: "index_game_collection_items_on_game_collection_id"
+    t.index ["game_id"], name: "index_game_collection_items_on_game_id"
+    t.index ["platform_id"], name: "index_game_collection_items_on_platform_id"
+  end
+
   create_table "game_collections", force: :cascade do |t|
     t.bigint "user_id"
-    t.bigint "game_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["game_id"], name: "index_game_collections_on_game_id"
     t.index ["user_id"], name: "index_game_collections_on_user_id"
   end
 
@@ -95,9 +110,12 @@ ActiveRecord::Schema.define(version: 2019_04_20_184202) do
     t.integer "igdb_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "cover_id"
     t.string "url"
-    t.index ["cover_id"], name: "index_games_on_cover_id"
+  end
+
+  create_table "jwt_blacklist", force: :cascade do |t|
+    t.string "jti", null: false
+    t.index ["jti"], name: "index_jwt_blacklist_on_jti"
   end
 
   create_table "multiplayer_modes", force: :cascade do |t|
@@ -128,15 +146,23 @@ ActiveRecord::Schema.define(version: 2019_04_20_184202) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string "email"
-    t.string "username"
-    t.string "first_name"
-    t.string "last_name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
-  add_foreign_key "game_collections", "games"
+  add_foreign_key "game_collection_items", "game_collections"
+  add_foreign_key "game_collection_items", "games"
+  add_foreign_key "game_collection_items", "platforms"
   add_foreign_key "game_collections", "users"
   add_foreign_key "game_developers", "companies"
   add_foreign_key "game_developers", "games"
