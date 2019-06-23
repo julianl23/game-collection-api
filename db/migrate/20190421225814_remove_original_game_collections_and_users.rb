@@ -4,6 +4,7 @@ class RemoveOriginalGameCollectionsAndUsers < ActiveRecord::Migration[5.2]
 
   def change
     drop_table :game_collections
-    drop_table :users
+    # drop_table :users
   end
 end
+w
