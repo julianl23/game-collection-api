@@ -15,7 +15,7 @@ class RegistrationsController < Devise::RegistrationsController
   # }
   def create
     build_resource sign_up_params
-    render nothing: true, status: :bad_request unless resource.valid?
+    return render nothing: true, status: :bad_request unless resource.valid?
 
     resource.save
     yield resource if block_given?

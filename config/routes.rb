@@ -2,8 +2,12 @@
 
 Rails.application.routes.draw do
   # devise_for :users
-  devise_for :users, controllers: { registrations: 'registrations' }
-  resources :game_collections
+  devise_for :users, controllers: {
+    registrations: 'registrations'
+  }
+  resources :game_collections, shallow: true do
+    resources :game_collection_items, path: :items
+  end
   resources :covers
   resources :multiplayer_modes
   resources :platforms

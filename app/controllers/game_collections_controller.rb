@@ -11,10 +11,10 @@ class GameCollectionsController < ApplicationController
   #   render json: @games
   # end
   #
-  # # GET /games/1
-  # def show
-  #   render json: @game
-  # end
+  # GET /game_collections/1
+  def show
+    render json: @game_collection
+  end
   #
   # # POST /games
   # def create
@@ -26,20 +26,29 @@ class GameCollectionsController < ApplicationController
   #     render json: @game.errors, status: :unprocessable_entity
   #   end
   # end
-  #
-  # # PATCH/PUT /games/1
-  # def update
-  #   if @game.update(game_params)
-  #     render json: @game
-  #   else
-  #     render json: @game.errors, status: :unprocessable_entity
-  #   end
-  # end
-  #
-  # # DELETE /games/1
-  # def destroy
-  #   @game.destroy
-  # end
+
+  # PATCH/PUT /game_collections/1
+  def update
+    # if @game_collection.update(game_params)
+    #   render json: @game_collection
+    # else
+    #   render json: @game_collection.errors, status: :unprocessable_entity
+    # end
+    #
+    #
+    #
+    #
+    # use this to add a game?
+    # is there any metadata on the collection that i'd want to change?
+    # should adding a game be PATCH /game_collections/games?
+  end
+
+
+  # DELETE GET /game_collections/1
+  def destroy
+    @game_collection.destroy
+  end
+
   #
   # private
   #

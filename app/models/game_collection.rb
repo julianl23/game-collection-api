@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
 class GameCollection < ApplicationRecord
-  has_one :user
+  belongs_to :user
   has_many :games, through: :game_collection_item
 end
