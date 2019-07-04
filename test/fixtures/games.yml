@@ -12,5 +12,28 @@
 #  releaseDate: 2019-02-17 19:53:24
 #  igdbId: 1
 
-one: {}
-two: {}
+
+one:
+  title: "Paper Mario"
+  description: "Paper Mario	Paper Mario is probably best described as an RPG platformer.
+    Mario travels through various lands, from desert to rainforest, on land, water and air,
+    platformer style, jumping on objects, breaking blocks, and uncovering hidden items. But
+    he interacts with characters, enemies, and storyline development RPG style.
+    The game begins as Mario sets out to save the Princess from the evil Bowser, who has
+    stolen a magical artifact called the Star Rod and made himself invincible. Jealous of Mario's
+    popularity and wanting desperately to be favored by the Princess, Bowser has kidnapped her
+    against her will and taken her to his floating castle high in the skies above the land.
+    Mario quickly finds that the only way he can beat Bowser and rescue his main girl is to
+    retrieve seven Star Spirits, magical entities that grant wishes, and use them against his evil foe."
+  release_date: "2000-08-11 00:00:00.000000"
+  igdb_id: 3340
+  url: "https://www.igdb.com/games/paper-mario"
+two:
+  title: "Mole Mania"
+  description: "Join Muddy Mole in a race to destroy enemies and obstacles in an attempt to defeat the
+    evil farmer, Jinbei. Blast strategic exits using black balls and tunnel your way to
+    the next action-packed level. Help Muddy solve the incredible puzzles of Jinbei Land
+    and reunite him with his beloved mole family. You'll dig the fast pace and challenging fun of Mole Mania!"
+  release_date: "1997-02-28 00:00:00.000000"
+  igdb_id: "49038"
+  url: "https://www.igdb.com/games/mole-mania"

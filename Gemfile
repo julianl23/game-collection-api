@@ -49,4 +49,6 @@ gem 'devise'
 gem 'devise-jwt'
 gem 'dotenv-rails', groups: %i[development test]
 gem 'http'
+gem 'kaminari'
 gem 'prettier'
+gem 'ransack'

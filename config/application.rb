@@ -39,6 +39,5 @@ module GameCollectionApi
     config.autoload_paths << Rails.root.join('lib')
 
     config.logger = Logger.new(STDOUT)
-    config.log_level = :error
   end
 end

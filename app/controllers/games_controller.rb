@@ -5,14 +5,27 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    @games = Game.all
+    search = Game.includes(:multiplayer_modes).ransack(params[:q])
+    @games = search.result.page(params[:page])
 
-    render json: @games
+    render json: {
+      current_page: @games.current_page,
+      total_pages: @games.total_pages,
+      total_count: @games.count,
+      results: @games
+    }
   end
 
   # GET /games/1
   def show
-    render json: @game
+    render json: @game, include: %i[
+      multiplayer_modes
+      platforms
+      game_modes
+      game_developers
+      game_publishers
+      cover
+    ]
   end
 
   # POST /games
@@ -44,7 +57,14 @@ class GamesController < ApplicationController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_game
-    @game = Game.find(params[:id])
+    @game = Game.includes(
+      :multiplayer_modes,
+      :platforms,
+      :game_modes,
+      :game_developers,
+      :game_publishers,
+      :cover
+    ).find(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.

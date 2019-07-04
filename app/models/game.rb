@@ -2,8 +2,6 @@
 
 class Game < ApplicationRecord
   has_one :cover
-  has_many :companies, through: :developers
-  has_many :companies, through: :publishers
 
   has_many :game_mode_items
   has_many :game_modes, through: :game_mode_items
