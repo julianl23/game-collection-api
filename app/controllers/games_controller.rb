@@ -5,8 +5,15 @@ class GamesController < ApplicationController
 
   # GET /games
   def index
-    search = Game.includes(:multiplayer_modes).ransack(params[:q])
-    @games = search.result.page(params[:page])
+    search = Game.ransack(params[:q])
+    @games = search.result.includes(
+      :multiplayer_modes,
+      :platforms,
+      :game_modes,
+      :cover,
+      :game_developers,
+      :game_publishers,
+    ).includes(game_developers: :company).page(params[:page])
 
     render json: {
       current_page: @games.current_page,
@@ -61,10 +68,10 @@ class GamesController < ApplicationController
       :multiplayer_modes,
       :platforms,
       :game_modes,
+      :cover,
       :game_developers,
-      :game_publishers,
-      :cover
-    ).find(params[:id])
+      :game_publishers
+    ).includes(game_developers: :company).find(params[:id])
   end
 
   # Only allow a trusted parameter "white list" through.
