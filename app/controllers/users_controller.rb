@@ -1,7 +1,15 @@
 class UsersController < ApplicationController
+
   # GET /users/:id(.:format)
+  # GET /user
   def show
-    @user = User.find(params[:id])
+    @user = if params.key?(:id)
+              User.find(params[:id])
+            else
+              current_user
+            end
+
+    # Returns null if no user is set
     render json: @user
   end
 end

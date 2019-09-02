@@ -17,6 +17,8 @@ class Game < ApplicationRecord
   has_many :game_publishers
   has_many :companies, through: :game_publishers
 
+  paginates_per 20
+
   def as_json(*)
     super(except: [:created_at, :updated_at], include: {
       multiplayer_modes: {},
