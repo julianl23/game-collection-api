@@ -10,6 +10,8 @@ class UsersController < ApplicationController
             end
 
     # Returns null if no user is set
-    render json: @user
+    render json: @user, include: %i[
+      game_collection
+    ]
   end
 end

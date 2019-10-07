@@ -2,5 +2,5 @@
 
 class GameCollection < ApplicationRecord
   belongs_to :user
-  has_many :games, through: :game_collection_item
+  has_many :game_collection_items
 end

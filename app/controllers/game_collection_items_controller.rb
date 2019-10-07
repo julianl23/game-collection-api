@@ -1,5 +1,5 @@
 class GameCollectionItemsController < ApplicationController
-  before_action :set_game_collection, only: %i[create show update destroy]
+  before_action :set_game_collection, only: %i[index create show update destroy]
   before_action :authenticate_user!
 
   # POST /game_collections/:game_collection_id/items
@@ -15,12 +15,46 @@ class GameCollectionItemsController < ApplicationController
     end
   end
 
+  # GET /game_collections/:game_collection_id/items
+  def index
+    # TODO: This should be paginated
+
+    render json: @game_collection.game_collection_items, include: {
+      game: {
+        platforms: {},
+        game_developers: {
+          include: %i[company]
+        },
+        game_publishers: {
+          include: %i[company]
+        },
+        cover: {}
+      },
+      platform: {}
+    }
+  end
+
   #
   # private
   #
   # # Use callbacks to share common setup or constraints between actions.
   def set_game_collection
-    @game_collection = GameCollection.find(params[:game_collection_id])
+    @game_collection = GameCollection.includes(game_collection_items: [
+                                                 {
+                                                   game: [
+                                                     :multiplayer_modes,
+                                                     :platforms,
+                                                     :game_modes,
+                                                     :cover,
+                                                     {
+                                                       game_developers: [
+                                                         :company
+                                                       ]
+                                                     },
+                                                     :game_publishers
+                                                   ]
+                                                 }
+                                               ]).find(params[:game_collection_id])
   end
 
   # # Only allow a trusted parameter "white list" through.

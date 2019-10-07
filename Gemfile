@@ -52,3 +52,5 @@ gem 'http'
 gem 'kaminari'
 gem 'prettier'
 gem 'ransack'
+
+gem "jbuilder", "~> 2.9"
